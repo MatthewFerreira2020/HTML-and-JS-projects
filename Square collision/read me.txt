@@ -1,0 +1,2 @@
+This was made as the final for a web development course. The task was to make two squares that collide. 
+When they collide they change colors and spawn circles that continue to change color.

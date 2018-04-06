@@ -1,0 +1,218 @@
+<html>
+<head>
+	<title>Final part 1</title> 
+	<meta charset="utf-8">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript"> 
+	$(document).ready(function() {
+			
+			var canvas = $("#myCanvas");
+			var context = canvas.get(0).getContext("2d");
+			var startButton = $("#start");
+			var stopButton = $("#stop");
+			var playAnimation = true;
+			var canvasWidth = canvas.width(); 
+			var canvasHeight = canvas.height();
+			var numberofcircles = 0;
+			var oldnumberofcircles = 0;
+			//to hide 
+			stopButton.hide(); 
+			
+			//to register onclick event
+			
+			startButton.click(function (){
+			
+				$(this).hide(); 
+				stopButton.show(); 
+				playAnimation = true; 
+				animate(); 
+			});
+			var Shape = function(x, y, width, height){
+				this.x = x; 
+				this.y = y; 
+				this.width = width; 
+				this.height = height;
+				
+				this.reverseX = false; 
+				this.reverseY = false; 
+
+				this.startingcolor = 'rgb('+
+      						Math.floor(Math.random()*256)+','+
+      						Math.floor(Math.random()*256)+','+
+      						Math.floor(Math.random()*256)+')';
+
+
+				
+			};
+			var Circle = function(x, y, radius){
+				this.x = x; 
+				this.y = y; 
+				this.radius = radius; 
+				this.reverseX = false; 
+				this.reverseY = false;
+			};
+
+			var shapes = new Array(); 
+			for(var i = 0; i < 2; i++){
+				var x = Math.random()*400; 
+				var y = Math.random()*400; 
+				
+				var width = height = 50; 
+				shapes.push(new Shape(x, y, width, height));	
+			};
+			var circles = new Array(); 
+			
+			
+			function animate(){
+			if(playAnimation){
+				
+				context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+			
+				var shapesLength = shapes.length;
+				for(var i = 0; i < shapesLength; i++){
+						var tmpShape = shapes[i];
+						
+						
+						if(!tmpShape.reverseX){
+							tmpShape.x += 3; 
+						}else{
+							tmpShape.x -= 3; 
+						};
+						if(!tmpShape.reverseY){
+							tmpShape.y += 3; 
+						}else{
+							tmpShape.y -= 3; 
+						};
+
+							
+      							context.fillStyle = tmpShape.startingcolor;
+      							context.fillRect(tmpShape.x, tmpShape.y, tmpShape.width, tmpShape.height);
+						
+						if(tmpShape.x < 0 ){
+							tmpShape.reverseX = false; 
+						}else if (tmpShape.x + tmpShape.width > canvasWidth){
+							tmpShape.reverseX = true; 	
+						};
+						if(tmpShape.y < 0){
+							tmpShape.reverseY = false;
+						}else if (tmpShape.y + tmpShape.height > canvasHeight){
+							tmpShape.reverseY = true;	
+						};
+				}
+						if (shapes[0].x < shapes[1].x + shapes[1].width &&
+						   shapes[0].x + shapes[0].width > shapes[1].x &&
+						   shapes[0].y < shapes[1].y + shapes[1].height &&
+						   shapes[0].height + shapes[0].y > shapes[1].y) {
+						    // collision detected!
+							numberofcircles++;
+							var cr = 'rgb('+
+      						Math.floor(Math.random()*256)+','+
+      						Math.floor(Math.random()*256)+','+
+      						Math.floor(Math.random()*256)+')';
+
+      						var cr2 = 'rgb('+
+      						Math.floor(Math.random()*256)+','+
+      						Math.floor(Math.random()*256)+','+
+      						Math.floor(Math.random()*256)+')';
+
+      						shapes[0].startingcolor = cr;
+
+      						shapes[1].startingcolor = cr2;
+
+      						context.fillStyle = cr;
+      						context.fillRect(shapes[0].x, shapes[0].y, shapes[0].width, shapes[0].height);
+      						context.fillStyle = cr2;
+							context.fillRect(shapes[1].x, shapes[1].y, shapes[1].width, shapes[1].height);
+
+							if(shapes[0].reverseX == false){
+								shapes[0].reverseX = true;
+							} else {
+								shapes[0].reverseX = false;
+							}
+							if(shapes[0].reverseY == false){
+								shapes[0].reverseY = true;
+							} else {
+								shapes[0].reverseY = false;
+							}
+
+							if(shapes[1].reverseX == false){
+								shapes[1].reverseX = true;
+							} else {
+								shapes[1].reverseX = false;
+							}
+							if(shapes[1].reverseY == false){
+								shapes[1].reverseY = true;
+							} else {
+								shapes[1].reverseY = false;
+							}
+
+						}
+
+						if (oldnumberofcircles != numberofcircles) {	
+
+							var x = Math.random()*480 / 2;
+							var y = Math.random()*480 / 2;
+							var radius = 5;
+							circles.push(new Circle(x, y, radius));
+
+							oldnumberofcircles = numberofcircles;
+						}
+
+						var circlesLength = circles.length;
+						for(var i = 0; i < circlesLength; i++){
+						var tmpShape = circles[i];
+						
+						if(!tmpShape.reverseX){
+							tmpShape.x += 2;
+						} else{
+							tmpShape.x -= 2;
+						}
+						if(!tmpShape.reverseY){
+							tmpShape.y += 2; 
+						}else{
+							tmpShape.y -= 2; 
+						};
+							var cr3 = 'rgb('+ Math.floor(Math.random()*256)+','+ Math.floor(Math.random()*256)+','+ Math.floor(Math.random()*256)+')';
+							context.fillStyle = cr3;
+							context.beginPath();
+							context.arc(tmpShape.x, tmpShape.y, tmpShape.radius, 0, 2 * Math.PI);
+							context.closePath();
+							context.fill();
+							
+						
+						
+						if(tmpShape.y < 0){
+							tmpShape.reverseY = false;
+						}else if (tmpShape.y + tmpShape.radius > canvasHeight){
+							tmpShape.reverseY = true;	
+						};
+						if (tmpShape.x < 0) {
+							tmpShape.reverseX = false;
+						} else if (tmpShape.x + tmpShape.radius > canvasWidth){
+							tmpShape.reverseX = true;
+						};
+      						
+				}
+				
+				setTimeout(animate, 33);		
+				
+			  }
+						}
+			  	 
+			
+			
+			stopButton.click(function(){
+				$(this).hide(); 
+				startButton.show();	
+				playAnimation = false;
+			});
+	});
+	</script>
+</head>
+<body>
+<canvas id="myCanvas" height="500" width="500"></canvas>
+<Button id="start">Start</Button>
+<Button id="stop">Stop</Button>
+</body>
+</html>
