@@ -1,0 +1,80 @@
+<!doctype html>
+<title>Animation object</title>
+<canvas width="1300" height="210"></canvas>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+$( document ).ready(function() {
+    console.log( "ready!" );
+});
+var keysFrames = [[78,74,80,75,67,69],[0,40,80,120,160,200]];
+var miku =
+{
+  IMAGE: "sprites.png",
+  SIZE: 40,
+  numberOfFrames: 6,
+  currentFrame: 0,
+  sourceX: 0,
+  sourceY: 0,
+  updateAnimation: function()
+  {
+    this.sourceX = 0;
+    this.sourceY = 0;
+}
+ };
+var canvas = document.querySelector("canvas");
+var drawingSurface = canvas.getContext("2d");
+var image = new Image();
+image.src = miku.IMAGE;
+window.addEventListener("keydown", keydownHandler, false);
+function keydownHandler(event){
+				var pressed = event.keyCode;
+			  	if (pressed == keysFrames[0][0]) 
+			  	{
+			  		updateAnimation(keysFrames[1][0]);
+			  	}
+			  	if (pressed == keysFrames[0][1]) 
+			  	{
+			  		updateAnimation(keysFrames[1][1]);
+			  	}
+			  	if (pressed == keysFrames[0][2]) 
+			  	{
+			  		updateAnimation(keysFrames[1][2]);
+			  	}
+			  	if (pressed == keysFrames[0][3]) 
+			  	{
+			  		updateAnimation(keysFrames[1][3]);
+			  	}
+			  	if (pressed == keysFrames[0][4]) 
+			  	{
+			  		updateAnimation(keysFrames[1][4]);
+			  	}
+			  	if (pressed == keysFrames[0][5]) 
+			  	{
+			  		updateAnimation(keysFrames[1][5]);
+			  	}
+			  	window.removeEventListener("keydown", keydownHandler);
+			  	window.addEventListener("keyup", keyupHandler, false);
+			  }
+function keyupHandler(event)
+		    {
+		   		updateAnimation(keysFrames[1][0]);
+		   		window.removeEventListener("keyup", keyupHandler);
+		   		restart();
+			}
+function restart(){
+	window.addEventListener("keydown", keydownHandler, false);
+}
+
+    function updateAnimation(x)
+   {
+     miku.updateAnimation();
+	 render(x); 
+	}
+
+
+   function render(x)
+   {
+     drawingSurface.clearRect(0, 0, canvas.width, canvas.height);
+     drawingSurface.drawImage(image, x, miku.sourceY, miku.SIZE, miku.SIZE, 0, 0, miku.SIZE, miku.SIZE); 
+ }
+</script>

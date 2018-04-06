@@ -1,0 +1,10 @@
+The first version continues to go through a set of animations based off a sprite sheet. 
+The second version takes keyboard input and changes to the appropriate animation.
+
+input keys: 
+
+c to crouch
+k to kick
+j to jump
+e to block
+p to punch
